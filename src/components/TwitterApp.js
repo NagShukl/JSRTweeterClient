@@ -7,9 +7,6 @@ import { useDispatch, useSelector  } from 'react-redux';
 import { switchTweetTypeAction, loadTweetsAction } from '../redux/actions';
 
 const TwitterApp = () => {
-//   const [tweets, setTweets] = useState([]);
-//   const [selectedTweetType, setSelectedTweetType] = useState(AppConstents.tweet_types[0].type_key);
-
 // to get state form store
   const tweets = useSelector( state => state.tweets);
   const selectedTweetType = useSelector( state => state.selectedTweetType);
@@ -28,7 +25,6 @@ const TwitterApp = () => {
   const getTweetsForSelectedType = () => {
     axios.get(AppConstents.getFetchTweetUrlFor(selectedTweetType)).then(response => response.data)
       .then((data) => {
-        // setTweets(data);
         loadTweets(data);
         console.log('Got the response as,...', data);
       }).catch(err => {
@@ -38,7 +34,6 @@ const TwitterApp = () => {
   };
 
   const performTweetTypeSelect = (evt) => {
-    // setSelectedTweetType(evt.target.value);
     setSelectedTweetType(evt.target.value);
   }
 
