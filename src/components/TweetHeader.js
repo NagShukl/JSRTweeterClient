@@ -1,10 +1,9 @@
 import React from 'react';
 const TweetHeader = (user) => {
     return (
-        <div>
-       <p>AA {user.profile_image_url}</p>
+        <div className="TweetHeader">
      <img src={user.profile_image_url}/>
-     <b>{user.name}: {user.screen_name}: {user.location}</b><br></br>
+     <b>{user.name}: {user.screen_name}: {user.location}</b>
         </div>
         );
 };

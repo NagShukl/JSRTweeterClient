@@ -1,8 +1,13 @@
 $tweetColor: #ABCDEF;
 $tweetEditorColor:  #fff;
 $errorColor: red;
+$tweetBodyColor: #fff;
+$tweetSectionBoder: 1px solid #e6ecf0;
+$tweetSideMargin: 20px;
+$tweetHoverColor:   rgb(232, 236, 240);
+$actionDoneColor: rgb(228, 78, 78);
 body {
-    padding:0px  20px 0px 20px;
+    background-color: rgba(255, 255, 255, 0.959);
     .TwitterApp {
         .TwitterAppHeader {
             height: 60px;
@@ -12,6 +17,7 @@ body {
                 float: right;
                 justify-content: right;
                 margin-top: 10px;
+                margin-right: $tweetSideMargin;
                 form {
                     display: inline;
                     input[type='search'] {
@@ -34,6 +40,75 @@ body {
             }
         }
     .TwitterAppBody {
+        // .tweetsContainer {
+            // background-color: red;
+            ul {
+                list-style-type: none;
+                margin: 0px;
+                margin-left: -50px;
+                // display:;
+                li {
+                    margin: $tweetSideMargin;
+                    // margin-right: $tweetSideMargin;
+                    background-color: $tweetBodyColor;
+                    padding: 10px;
+                   
+                    .RenderTweet {
+                        margin: 10px;
+                        // background-color: $tweetBodyColor;
+                        // border-top: $tweetSectionBoder;
+                        .TweetHeader{
+                            border-bottom: $tweetSectionBoder;
+                        }
+                        .TweetFooter {
+                            border-top: $tweetSectionBoder;
+                            height: 26px;
+                            text-align: center;
+                            
+                            i {
+                                font-size: 20px;
+                                margin-left: 10%;
+                                margin-right: 10%;
+                                margin-top: 12px;
+                                &:hover {
+                                    font-size: 20px;
+                                    color: $tweetColor;
+                                    cursor: pointer;
+                                }
+                                &.notImplemented {
+                                    &:hover {
+                                        font-size: 20px;
+                                        margin-left: 10%;
+                                        margin-right: 10%;
+                                        cursor: not-allowed;
+                                    }
+                                }
+                                &.actionDone {
+                                    font-size: 20px;
+                                    color: $actionDoneColor;
+                                    cursor: pointer;
+                                    &:hover {
+                                        font-size: 20px;
+                                        margin-left: 10%;
+                                        margin-right: 10%;
+                                        //cursor: not-allowed;
+                                    }
+                                }
+                            }
+                            
+                        }
+                        // :hover {
+                        //     background-color: lightcyan;
+                        // }
+                    }
+                } 
+                & :hover {
+                    background-color: $tweetHoverColor;
+                    // opacity: .1;
+                }
+            }
+           
+        // }
         .PostTweet {
             height: 200px;
             padding-left: 50px;

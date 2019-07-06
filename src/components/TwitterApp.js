@@ -76,14 +76,17 @@ const performSearchAction = (key) => {
         // **JSR_NS_TO_DO use mock data to render tweets here.
       })
 }
-
+const handleTweetAction = (action, id) => {
+  alert('onTweetAction : from TWITTER APP,...make API call,...'+action+' : '+id);
+}
   return (
         <div className="TwitterApp">
           <TwitterAppHeader selectedTweetType={selectedTweetType}
         onTweetTypeSelect={performTweetTypeSelect} postClickAction={performPostClickAction}
         onSearch={performSearchAction}></TwitterAppHeader>
         <TwitterAppBody tweets={tweets} showPostTweet={showPostTweet}
-        postTweetAction={handlePostTweetAction}></TwitterAppBody>
+        postTweetAction={handlePostTweetAction}
+        onTweetAction={handleTweetAction}></TwitterAppBody>
       
       
     </div>

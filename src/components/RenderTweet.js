@@ -1,17 +1,21 @@
 import React from 'react';
-import TweetHeader from './TweetHeader'
-const getHashTags = tweet => {
-    // if( )
-}
-const RenderTweet = (tweet) => {
-    return (<div key={tweet.id}>
+import TweetHeader from './TweetHeader';
+import TweetFooter from './TweetFooter';
+
+const RenderTweet = (tweet, parTweetAction) => {
+    const onTweetAction = (action, id) => {
+        alert('onTweetAction : from render,...'+action+' : '+id);
+        parTweetAction(action, id);
+    }
+    return (<li key={tweet.id}><div  className='RenderTweet'>
         {/* <TweetHeader user={tweet.user}></TweetHeader>  */}
         {TweetHeader(tweet.user)}
         
-        <hr></hr>
         
         {TweetText(tweet)}
-      </div>);
+   
+        {TweetFooter(tweet, onTweetAction)}
+        </div> </li>);
 }
 const TweetText = (tweet) => {
     return (<p>{tweet.hasOwnProperty('full_text')?tweet.full_text:tweet.text}</p>);
