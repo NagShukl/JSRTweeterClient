@@ -34,7 +34,8 @@ const switchTweetType = (tweetType, state) => {
     console.log('**JSR,...Redux,...switchTweetType called');
     return {
         ...state,
-        selectedTweetType: tweetType
+        selectedTweetType: tweetType,
+        refreshLocal: false
       }
 }
 const toggleShowPost = (state) => {

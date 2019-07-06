@@ -1,5 +1,7 @@
 export default {
     API_BASE: 'http://localhost:4000/gettweets',
+    RETWEET: 'RETWEET',
+    FAVOTIE: 'FAVOTIE',
     tweet_types: [
       {
         type_url: 'favorites/list',

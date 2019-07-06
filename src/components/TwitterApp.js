@@ -11,7 +11,7 @@ const TwitterApp = () => {
 // to get state form store
   const tweets = useSelector( state => state.tweets);
   const selectedTweetType = useSelector( state => state.selectedTweetType);
-  // const [showPostTweet, toggleShowPostTweet] = useState(false);
+  const [refreshLocal, doRefreshLocal] = useState(false);
   const showPostTweet = useSelector( state => state.showPostTweet);
   // let showPostTweet = false;
 
@@ -24,8 +24,11 @@ const TwitterApp = () => {
   useEffect(() => {
     // make an API call to load twittes
     console.log('**JAI Shri Ram!! useEffect making call to get data');
-    getTweetsForSelectedType();
-  }, [selectedTweetType]);
+    // if(!refreshLocal) {
+      getTweetsForSelectedType();
+    // }
+    // refreshLocal = !refreshLocal;    
+  }, [selectedTweetType, refreshLocal]);
   
   const getTweetsForSelectedType = () => {
     axios.get(AppConstents.getFetchTweetUrlFor(selectedTweetType)).then(response => response.data)
@@ -50,7 +53,7 @@ const performPostClickAction = (evt) => {
    * @param {tweetContent} tweetContent 
    */
   const handlePostTweetAction = (tweetContent) => {
-    alert('handlePostTweetAction,...from twitter App,...Make an API call to post :: '+tweetContent);
+    // alert('handlePostTweetAction,...from twitter App,...Make an API call to post :: '+tweetContent);
     tweetContent = "**JSR - testing from App - working on! Test 1";
     axios.post('http://localhost:4000/posttweet', {status:tweetContent}).then(response => response.data)
       .then((data) => {
@@ -61,12 +64,13 @@ const performPostClickAction = (evt) => {
         // **JSR_NS_TO_DO use mock data to render tweets here.
       })
 }
+
 /**
  * This function is to exceupte API call for search tweet.
  * @param {Search Query text} key 
  */
 const performSearchAction = (key) => {
-  alert('performSearchAction,...from twitter App,...Make an API call to search for :: '+key);
+  // alert('performSearchAction,...from twitter App,...Make an API call to search for :: '+key);
   axios.post('http://localhost:4000/searchtweets', {q:key}).then(response => response.data)
       .then((data) => {
         loadTweets(data);
@@ -74,11 +78,46 @@ const performSearchAction = (key) => {
       }).catch(err => {
         alert('Got error!!');
         // **JSR_NS_TO_DO use mock data to render tweets here.
+      });
+}
+const handleTweetAction = (action) => {
+  console.log('onTweetAction : from TWITTER APP,...make API call,...',action);
+  //{ "id": "1146841099853545474", "action":"create" }
+  const reqBody = {};
+  reqBody.id = action.id;
+  reqBody.action = action.subAction;
+  let url = (action.action === AppConstents.FAVOTIE) ?'/favoritetweet':'/retweet';
+  alert(url);
+  console.log('**JSR,...',reqBody);
+  console.log('**JSR,...',action);
+  axios.post('http://localhost:4000'+url, reqBody).then(response => response.data)
+      .then((data) => {
+        // loadTweets(data);
+        //updateTweetById(action.id, !action.subAction);
+        doRefreshLocal(!refreshLocal);
+        console.log('Got the response as,...', data);
+      }).catch(err => {
+        alert('Got error!! '+err);
+        // **JSR_NS_TO_DO use mock data to render tweets here.
       })
 }
-const handleTweetAction = (action, id) => {
-  alert('onTweetAction : from TWITTER APP,...make API call,...'+action+' : '+id);
-}
+// const updateTweetById = (id, isFavorited) => {
+//   let ele;
+//   let ii;
+//   tweets.forEach((element, index) => {
+//     if(element.id_str === id) {
+//       alert(element.favorited + ' : '+isFavorited);
+//       element.favorited = isFavorited;
+//       ele = element;
+//       ii = index;
+//       alert(element.favorited + ' : '+isFavorited+ 'index = '+index);
+//     }
+//   });
+//   tweets[ii] = ele;
+  
+//   loadTweets(tweets);
+//   doRefreshLocal(true);
+// }
   return (
         <div className="TwitterApp">
           <TwitterAppHeader selectedTweetType={selectedTweetType}

@@ -3,9 +3,8 @@ import TweetHeader from './TweetHeader';
 import TweetFooter from './TweetFooter';
 
 const RenderTweet = (tweet, parTweetAction) => {
-    const onTweetAction = (action, id) => {
-        alert('onTweetAction : from render,...'+action+' : '+id);
-        parTweetAction(action, id);
+    const onTweetAction = (action) => {
+        parTweetAction(action);
     }
     return (<li key={tweet.id}><div  className='RenderTweet'>
         {/* <TweetHeader user={tweet.user}></TweetHeader>  */}

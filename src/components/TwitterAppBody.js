@@ -6,9 +6,8 @@ const TwitterAppBody = (props) => {
     const handlePostTweetAction = (tweetContent) => {
         props.postTweetAction(tweetContent);
     }
-    const onTweetAction = (action, id) => {
-        alert('onTweetAction : from TwitterAppBody,...'+action+' : '+id);
-        props.onTweetAction(action, id);
+    const onTweetAction = (action) => {
+        props.onTweetAction(action);
     }
     return (
         <div className="TwitterAppBody">

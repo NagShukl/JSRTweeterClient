@@ -22,6 +22,7 @@ app.get('/gettweets', function (req, res) {
     if (!error) {
       console.log(tweets.length);
       res.json(tweets);
+      return;
     }
     res.json(error);
   });
@@ -58,6 +59,26 @@ app.post('/posttweet', function (req, res) {
     }
     res.json(data);
   });
+});
+app.post('/favoritetweet', function (req, res) {
+  console.log('/favoritetweet,....'+JSON.stringify(req.body));
+  console.log('/favoritetweet,....'+req.body);
+  const id = req.body.id;
+  const action = req.body.action;
+  let url = 'favorites/'+(!action?'create':'destroy');
+  //statuses/retweet/:id
+  client.post(url, { 'id': id }, (err, response) => {
+          if(err){
+            console.log(err[0].message);
+            res.json(err);
+            return;
+          }
+    
+          const username = response.user.screen_name;
+          const favoritedTweetId = response.id_str;
+          console.log(`Favorited: https://twitter.com/${username}/status/${favoritedTweetId}`);
+          res.json(response);
+        });
 });
 
 app.listen(port, function () {
