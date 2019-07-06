@@ -6,13 +6,29 @@ body {
     .TwitterApp {
         .TwitterAppHeader {
             height: 60px;
-            justify-content: center;
+            justify-content: right;
             background-color: #ABCDEF;
-            Button {
-                margin-left: 10px;
-                margin-right: 10px;
+            .rightPanel {
+                float: right;
+                justify-content: right;
+                margin-top: 10px;
+                form {
+                    display: inline;
+                    input[type='search'] {
+                        display: inline;
+                        width: 200px;
+                    }
+                }
+                
+                Button {
+                    margin-left: 10px;
+                    margin-right: 10px;
+                    display: inline;                    
+                }
             }
+            
             select {
+                float: left;
                 margin-top: 20px;
                 margin-left: 20px;
             }

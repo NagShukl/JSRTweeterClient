@@ -26,20 +26,15 @@ const TwitterApp = () => {
     console.log('**JAI Shri Ram!! useEffect making call to get data');
     getTweetsForSelectedType();
   }, [selectedTweetType]);
-  /**
-   * This method is to post the tweetContent to the API.
-   * @param {tweetContent} tweetContent 
-   */
-  const handlePostTweetAction = (tweetContent) => {
-    alert('handlePostTweetAction,...from twitter App,...Make an API call to post :: '+tweetContent);
-}
+  
   const getTweetsForSelectedType = () => {
     axios.get(AppConstents.getFetchTweetUrlFor(selectedTweetType)).then(response => response.data)
       .then((data) => {
         loadTweets(data);
+        // <NS_TODO>Should clear search box,...
         console.log('Got the response as,...', data);
       }).catch(err => {
-        alert('Got error!!');
+        alert('Got error!!'+err);
         // **JSR_NS_TO_DO use mock data to render tweets here.
       })
   };
@@ -50,12 +45,43 @@ const TwitterApp = () => {
 const performPostClickAction = (evt) => {
   toggleShowPostTweet();//!showPostTweet);
 }
+/**
+   * This method is to post the tweetContent to the API.
+   * @param {tweetContent} tweetContent 
+   */
+  const handlePostTweetAction = (tweetContent) => {
+    alert('handlePostTweetAction,...from twitter App,...Make an API call to post :: '+tweetContent);
+    tweetContent = "**JSR - testing from App - working on! Test 1";
+    axios.post('http://localhost:4000/posttweet', {status:tweetContent}).then(response => response.data)
+      .then((data) => {
+        //loadTweets(data);
+        console.log('handlePostTweetAction : Got the response as,...', data);
+      }).catch(err => {
+        alert('Got error!!'+err);
+        // **JSR_NS_TO_DO use mock data to render tweets here.
+      })
+}
+/**
+ * This function is to exceupte API call for search tweet.
+ * @param {Search Query text} key 
+ */
+const performSearchAction = (key) => {
+  alert('performSearchAction,...from twitter App,...Make an API call to search for :: '+key);
+  axios.post('http://localhost:4000/searchtweets', {q:key}).then(response => response.data)
+      .then((data) => {
+        loadTweets(data);
+        console.log('Got the response as,...', data);
+      }).catch(err => {
+        alert('Got error!!');
+        // **JSR_NS_TO_DO use mock data to render tweets here.
+      })
+}
 
   return (
         <div className="TwitterApp">
           <TwitterAppHeader selectedTweetType={selectedTweetType}
         onTweetTypeSelect={performTweetTypeSelect} postClickAction={performPostClickAction}
-        ></TwitterAppHeader>
+        onSearch={performSearchAction}></TwitterAppHeader>
         <TwitterAppBody tweets={tweets} showPostTweet={showPostTweet}
         postTweetAction={handlePostTweetAction}></TwitterAppBody>
       

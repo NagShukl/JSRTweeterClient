@@ -7,6 +7,7 @@ const client = new Twitter(config);
 
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
 // var app = express();
 var port = process.env.PORT || 4000;
 
@@ -17,17 +18,50 @@ app.get('/gettweets', function (req, res) {
   console.log(req.query.urlpattern);
   let url = req.query.urlpattern;
   //urlpattern=favorites/list
-  client.get(url, function(error, tweets, response) {
+  client.get(url, function (error, tweets, response) {
     if (!error) {
       console.log(tweets.length);
       res.json(tweets);
     }
+    res.json(error);
   });
- 
+});
+app.post('/searchtweets', function (req, res) {
+  console.log(req.body);
+  const q = req.body.q;
+  // res.json({ 'q': q });
+  const params = {
+    q: q,
+    count: 10,
+    result_type: 'recent',
+    lang: 'en'
+  }
+  // Initiate your search using the above paramaters
+  client.get('search/tweets', params, (err, data, response) => {
+    // If there is no error, proceed
+    if (err) {
+      console.log('aa: ', err);
+      res.json(err);
+    }
+    res.json(data.statuses);
+  });
+});
+app.post('/posttweet', function (req, res) {
+  console.log(req.body);
+
+  // Initiate your search using the above paramaters
+  client.post('statuses/update', req.body, (err, data, response) => {
+    // If there is no error, proceed
+    if (err) {
+      console.log('aa: ', err);
+      res.json(err);
+    }
+    res.json(data);
+  });
 });
 
-app.listen(port, function() {
-   console.log('Server started on port: ' + port);
+app.listen(port, function () {
+  console.log('Server started on port: ' + port);
 });
 
 
