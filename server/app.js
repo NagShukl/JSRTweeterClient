@@ -81,6 +81,28 @@ app.post('/favoritetweet', function (req, res) {
         });
 });
 
+app.post('/retweet', function (req, res) {
+  console.log('/retweet,....'+JSON.stringify(req.body));
+  console.log('/retweet,....'+req.body);
+  const id = req.body.id;
+  const action = req.body.action;
+  let url = 'statuses/'+(!action?'retweet':'unretweet')+'/'+id;
+  console.log('/retweet,....'+url);
+  client.post(url, (err, response) => {
+          if(err){
+            console.log(err);
+            res.json(err);
+            return;
+          }
+    
+          const username = response.user.screen_name;
+          const favoritedTweetId = response.id_str;
+          console.log(`statuses: https://twitter.com/${username}/status/${favoritedTweetId}`);
+          res.json(response);
+        });
+});
+
+
 app.listen(port, function () {
   console.log('Server started on port: ' + port);
 });
