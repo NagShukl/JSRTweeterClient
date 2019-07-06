@@ -2,8 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import { Provider } from 'react-redux';
 import store from './redux/redux';
-import './App.css';
+import './App.scss';
 import TwitterApp from './components/TwitterApp';
+import './custom.scss';
 
 function App() {
  

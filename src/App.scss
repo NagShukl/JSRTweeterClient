@@ -1,0 +1,58 @@
+$tweetColor: #ABCDEF;
+$tweetEditorColor:  #fff;
+$errorColor: red;
+body {
+    padding:0px  20px 0px 20px;
+    .TwitterApp {
+        .TwitterAppHeader {
+            height: 60px;
+            justify-content: center;
+            background-color: #ABCDEF;
+            Button {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+            select {
+                margin-top: 20px;
+                margin-left: 20px;
+            }
+        }
+    .TwitterAppBody {
+        .PostTweet {
+            height: 200px;
+            padding-left: 50px;
+            padding-right: 50px;
+            background-color: $tweetColor;
+            .tweetEditor {
+                height: 150px;
+                background-color: $tweetEditorColor;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+            .actionbar {
+                // justify-content: left;
+                float: right;
+                height: 50px;
+                display: flex;
+                align-items: center; 
+                justify-content: center;
+                Button {
+                    margin-left: 10px;
+                }
+                span {
+                    // margin-right: 10px;
+                    color: $tweetEditorColor;
+                    font-weight: bold;
+                }
+                .exceedLimit {
+                    color: $errorColor;
+                }
+            }
+        }
+        .noDisplay {
+            display: none;
+        }
+    }    
+    }
+    
+}

@@ -1,4 +1,4 @@
-import {LOAD_TWEETS, SWITCH_TWEET_TYPE} from './actions'
+import {LOAD_TWEETS, SWITCH_TWEET_TYPE, TOGGLE_SHOW_POST} from './actions'
 import initState from './redux';
 
 // const initState = {
@@ -13,6 +13,8 @@ import initState from './redux';
           return loadTweets(action.tweets, state);
       case SWITCH_TWEET_TYPE:
         return switchTweetType(action.tweetType, state);
+      case TOGGLE_SHOW_POST:
+        return toggleShowPost(state);
     //   case REMOVE_FROM_CART:
     //     return performRemoveFromCart(action.id, state);
     //   case REDUCE_QUANTITY:
@@ -34,5 +36,12 @@ const switchTweetType = (tweetType, state) => {
         ...state,
         selectedTweetType: tweetType
       }
+}
+const toggleShowPost = (state) => {
+  console.log('**JSR,...Redux,...toggleShowPost called');
+  return {
+      ...state,
+      showPostTweet: !state.showPostTweet
+    }
 }
   export default AppReducer;

@@ -4,7 +4,8 @@ import { createStore }  from 'redux';
 
 const initState = {
     tweets: [],
-    selectedTweetType: AppConstents.tweet_types[0].type_key
+    selectedTweetType: AppConstents.tweet_types[0].type_key,
+    showPostTweet: false
   };
 
 const store = createStore(
