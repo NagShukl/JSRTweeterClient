@@ -170,7 +170,7 @@ const jsrTweet = (url) => {
       if (!error) {
        resolve(tweets_local);
       } else {
-        console.log('Inside ELSE,...');
+        console.log('Inside ELSE,...',error);
         reject([]);
       }
     });

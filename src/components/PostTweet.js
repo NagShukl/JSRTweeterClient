@@ -30,7 +30,7 @@ const PostTweet = (props) => {
     }
     return (
         <span className={showPostTweet ? '' : 'noDisplay'}>
-            <Mutation mutation={getAA(tweetContent)}>
+            <Mutation mutation={POST_TWEET_MUTATION}>
             {(postTweet, {data}) => (
                 <div className='PostTweet'>
                     <div key="tweetEditor" id="tweetEditor" className="tweetEditor" onKeyUp={(evt) => { setTweetContent(evt.target.innerText) }} contentEditable="true" suppressContentEditableWarning={true}>
@@ -42,8 +42,13 @@ const PostTweet = (props) => {
                             e.preventDefault();
                             // postTweet(tweetContent)
                             postTweet(
-                                tweetContent
+                                {
+                                    variables: {status: tweetContent}
+                                }
                               );
+                              toggleShowPostTweet();
+        // Clear tweet content
+        document.getElementById('tweetEditor').innerHTML = '';
                           }}
                         
                         
@@ -55,14 +60,14 @@ const PostTweet = (props) => {
         </span>
     );
 };
-const getAA = (tweetContent) => {
+// const getAA = (tweetContent) => {
 const POST_TWEET_MUTATION =  gql`
-mutation {
-    createTweet(status: "${tweetContent}")
+mutation createTweet($status: String!){
+    createTweet(status: $status)
 }
 `;
-return POST_TWEET_MUTATION;
-}
+// return POST_TWEET_MUTATION;
+// }
 
 // gql`
 // mutation {
