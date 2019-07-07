@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo'
 import { POST_TWEET_MUTATION } from '../constents/gqlQueries'
 import { toggleShowPostAction } from '../redux/actions';
 
-const PostTweet = (props) => {
+const PostTweet = () => {
     const [tweetContent, setTweetContent] = useState('');
     const showPostTweet = useSelector(state => state.showPostTweet);
     const dispatch = useDispatch();
@@ -17,39 +17,37 @@ const PostTweet = (props) => {
     const performCancelClick = () => {
         toggleShowPostTweet();
     }
-   
+
     return (
         <span className={showPostTweet ? '' : 'noDisplay'}>
             <Mutation mutation={POST_TWEET_MUTATION}>
-            {(postTweet, {data}) => (
-                <div className='PostTweet'>
-                    <div key="tweetEditor" id="tweetEditor" className="tweetEditor" onKeyUp={(evt) => { setTweetContent(evt.target.innerText) }} contentEditable="true" suppressContentEditableWarning={true}>
+                {(postTweet, { data }) => (
+                    <div className='PostTweet'>
+                        <div key="tweetEditor" id="tweetEditor" className="tweetEditor"
+                            onKeyUp={(evt) => { setTweetContent(evt.target.innerText) }} contentEditable="true"
+                            suppressContentEditableWarning={true}>
+                        </div>
+                        <div className="actionbar">
+                            <span className={tweetContent.length > 140 ? 'exceedLimit' : ''}>{140 - tweetContent.length}</span>
+                            <Button color="secondary" onClick={() => performCancelClick()} outline>Cancel</Button>
+                            <Button color="primary" onClick={(e) => {
+                                e.preventDefault();
+                                postTweet(
+                                    {
+                                        variables: { status: tweetContent }
+                                    }
+                                );
+                                toggleShowPostTweet();
+                                // Clear tweet content
+                                document.getElementById('tweetEditor').innerHTML = '';
+                            }}
+                            >Post</Button>
+                        </div>
                     </div>
-                    <div className="actionbar">
-                        <span className={tweetContent.length > 140 ? 'exceedLimit' : ''}>{140 - tweetContent.length}</span>
-                        <Button color="secondary" onClick={() => performCancelClick()} outline>Cancel</Button>
-                        <Button color="primary" onClick = {(e) => {
-                            e.preventDefault();
-                            // postTweet(tweetContent)
-                            postTweet(
-                                {
-                                    variables: {status: tweetContent}
-                                }
-                              );
-                              toggleShowPostTweet();
-        // Clear tweet content
-        document.getElementById('tweetEditor').innerHTML = '';
-                          }}
-                        
-                        
-                        >Post</Button>
-                    </div>
-                </div>
-            )}
+                )}
             </Mutation>
         </span>
     );
 };
-
 
 export default PostTweet;

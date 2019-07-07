@@ -1,10 +1,10 @@
 import React from 'react';
-const TweetHeader = (user) => {
+const TweetHeader = (props) => {
     return (
         <div className="TweetHeader">
-     <img src={user.profile_image_url} alt="userImage"/>
-     <b>{user.name}: {user.screen_name}: {user.location}</b>
+            <img src={props.user.profile_image_url} alt="userImage" />
+            <b>{props.user.name}: {props.user.screen_name}: {props.user.location}</b>
         </div>
-        );
+    );
 };
 export default TweetHeader;

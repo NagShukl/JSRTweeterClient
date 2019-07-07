@@ -6,12 +6,12 @@ import TwitterApp from './components/TwitterApp';
 import './custom.scss';
 
 function App() {
- 
+
   return (
 
     <div className="App">
       <Provider store={store}>
-      <TwitterApp></TwitterApp>
+        <TwitterApp></TwitterApp>
       </Provider>
     </div>
   );
