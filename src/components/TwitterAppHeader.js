@@ -27,6 +27,7 @@ const TwitterAppHeader = (props) => {
                         placeholder='Search key...'></input>
                 </form>
                 <Button color="primary" onClick={() => props.postClickAction()}>Post Tweet</Button>
+                <i className="fal fa-edit" onClick={() => props.postClickAction()}></i>
             </div>
             <TwitterSelect
                 selectedTweetType={props.selectedTweetType}

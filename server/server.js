@@ -109,39 +109,27 @@ app.use(
     `),
     rootValue: {
       tweets: (url) => {
-        const res = jsrTweet(url.url);
-        console.log('**JSR,..returning from main resolver ' + res);
-        return res;
+        return jsrTweet(url.url);
       },
       searchTweets: (url) => {
-        const res = jsrTweetSearch(url.url);
-        console.log('**JSR,..returning from Search resolver ' , res);
-        return res;
+        return jsrTweetSearch(url.url);
       },
       createTweet: args => {
-          console.log('**JSR,...createTweet:,...'+args);
-          const res = jsrCreateTweet(args.status);
-        return res;
+          return jsrCreateTweet(args.status);
       },
       favoriteTweet: args => {
-        console.log('**JSR,...favoriteTweet:,...',args);
-        const res = jsrFavoriteTweet(args.id, args.action);
-        return res;
+        return jsrFavoriteTweet(args.id, args.action);
       },
       reTweet: args => {
-        console.log('**JSR,...jsrReTweet:,...',args);
-        const res = jsrReTweet(args.id, args.action);
-        return res;
+        return jsrReTweet(args.id, args.action);
       }
     },
     graphiql: true
   })
 );
 const jsrReTweet = (id, action) => {
-  console.log('**JSR jsrReTweet is called with : ' + id+ ' : '+action+' : '+(!action?'retweet':'unretweet'));
   return new Promise((resolve, reject) => {
     let url = 'statuses/'+(!action?'retweet':'unretweet')+'/'+id;
-    console.log('/retweet,....'+url);
     client.post(url, (err, response) => {
             if(err){
               console.log(err);
@@ -154,7 +142,6 @@ const jsrReTweet = (id, action) => {
   });
 }
 const jsrFavoriteTweet = (id, action) => {
-  console.log('**JSR jsrFavoriteTweet is called with : ' + id+ ' : '+action+' : '+(!action?'create':'destroy'));
   return new Promise((resolve, reject) => {
 
   let url = 'favorites/'+(!action?'create':'destroy');
@@ -169,26 +156,20 @@ const jsrFavoriteTweet = (id, action) => {
   });
 }
 const jsrCreateTweet = (status) => {
-  console.log('**JSR jsrCreateTweet is called with : ' + status);
   return new Promise((resolve, reject) => {
     client.post('statuses/update', {"status": status}, (err, data, response) => {
       // If there is no error, proceed
       if (err) {
-        console.log('jsrCreateTweet: error hapen while posting tweet ', err);
         reject('Error, While posting tweet : '+err);
       }
-      console.log('**JSR jsrCreateTweet response data : ', data);
       resolve('Your tweet posted successfully!');
     });
   });
 }
 // jsrTweetSearch
 const jsrTweetSearch = (url) => {
-  console.log('**JSR jsrTweet is called with : ' + url);
-  const q = url;
-  // res.json({ 'q': q });
   const params = {
-    q: q,
+    q: url,
     count: 10,
     result_type: 'recent',
     lang: 'en'
@@ -200,14 +181,12 @@ const jsrTweetSearch = (url) => {
         console.log('aa: ', err);
         reject([]);
       }
-      console.log('**JSR,...Here is my search result,...'+data.statuses.length);
       resolve(data.statuses);
     });
   });
 }
 
 const jsrTweet = (url) => {
-  console.log('**JSR jsrTweet is called with : ' + url);
   return new Promise((resolve, reject) => {
     client.get(url, function (error, tweets_local, response) {
       if (!error) {

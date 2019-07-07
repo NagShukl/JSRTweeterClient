@@ -28,8 +28,6 @@ const TwitterApp = () => {
 
   useEffect(() => {
     // make an API call to load twittes
-    console.log('**JAI Shri Ram!! useEffect making call to get data');
-    //getTweetsForSelectedType();  
   }, [selectedTweetType, executeSearch]);
 
 
@@ -54,7 +52,6 @@ const TwitterApp = () => {
 
   return (
     <ApolloProvider client={client}>
-      {console.log('**JSR,....Query is being called ' + selectedTweetType + ' : doExecuteSearch(true)==' + executeSearch)}
       <Query
         query={getGraphQLQuery(selectedTweetType, executeSearch)}
       >

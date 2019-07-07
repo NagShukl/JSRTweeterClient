@@ -11,7 +11,7 @@ const RenderTweet = (tweet) => {
     </div> </li>);
 }
 const TweetText = (tweet) => {
-    return (<p>{tweet.hasOwnProperty('full_text') ? tweet.full_text : tweet.text}</p>);
+    return (<div className="tweetText">{tweet.hasOwnProperty('full_text') ? tweet.full_text : tweet.text}</div>);
 }
 
 export default RenderTweet;

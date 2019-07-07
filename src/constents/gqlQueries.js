@@ -22,7 +22,6 @@ export const getGraphQLQuery = (type, executeSearch) => {
   // If executeSearch is true ==> Means we need to perform Query for Search.
   // otherwise get Query for Tweet list of type provided.
   url = AppConstents.getUrlpatternForTweetType(type);
-  console.log('**JSR,...getGraphQLQuery: ', type);
   const timeLineTweetTypeQuery = gql`
     query {
       tweets (url: "${url}") {
