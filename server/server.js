@@ -98,7 +98,7 @@ app.use(
             searchTweets(url: String): [Tweet!]!
         }
         type RootMutation {
-            createTweet(tweetInput: TweetInput): Tweet
+            createTweet(status: String): String
         }
         schema {
             query: RootQuery
@@ -117,21 +117,28 @@ app.use(
         return res;
       },
       createTweet: args => {
-        //   console.log('**JSR,...'+args.)
-        const tweet = {
-          _id: Math.random().toString(),
-          title: args.tweetInput.title,
-          description: args.tweetInput.description,
-          price: +args.tweetInput.price,
-          date: args.tweetInput.date
-        };
-        tweets.push(tweet);
-        return tweet;
+          console.log('**JSR,...createTweet:,...'+args);
+          const res = jsrCreateTweet(args.status);
+        return res;
       }
     },
     graphiql: true
   })
 );
+const jsrCreateTweet = (status) => {
+  console.log('**JSR jsrCreateTweet is called with : ' + status);
+  return new Promise((resolve, reject) => {
+    client.post('statuses/update', {"status": status}, (err, data, response) => {
+      // If there is no error, proceed
+      if (err) {
+        console.log('jsrCreateTweet: error hapen while posting tweet ', err);
+        reject('Error, While posting tweet : '+err);
+      }
+      console.log('**JSR jsrCreateTweet response data : ', data);
+      resolve('Your tweet posted successfully!');
+    });
+  });
+}
 // jsrTweetSearch
 const jsrTweetSearch = (url) => {
   console.log('**JSR jsrTweet is called with : ' + url);
@@ -148,27 +155,11 @@ const jsrTweetSearch = (url) => {
       // If there is no error, proceed
       if (err) {
         console.log('aa: ', err);
-        resject([]);
+        reject([]);
       }
       console.log('**JSR,...Here is my search result,...'+data.statuses.length);
       resolve(data.statuses);
     });
-    // client.get(url, function (error, tweets_local, response) {
-    //   if (!error) {
-    //     for (let i = 0; i < tweets_local.length; i++) {
-    //       tweets_local[i]._id = "1111",
-    //         tweets_local[i].title = "**JSR title _ " + i,
-    //         tweets_local[i].description = "**JSR desc,..._" + i,
-    //         tweets_local[i].price = 19.90,
-    //         tweets_local[i].date = "213213123"
-    //     }
-    //     console.log('final return ' + tweets_local.length);
-    //     resolve(tweets_local);
-    //   } else {
-    //     console.log('Inside ELSE,...');
-    //     resject([]);
-    //   }
-    // });
   });
 }
 
@@ -177,18 +168,10 @@ const jsrTweet = (url) => {
   return new Promise((resolve, reject) => {
     client.get(url, function (error, tweets_local, response) {
       if (!error) {
-        // for (let i = 0; i < tweets_local.length; i++) {
-        //   tweets_local[i]._id = "1111",
-        //     tweets_local[i].title = "**JSR title _ " + i,
-        //     tweets_local[i].description = "**JSR desc,..._" + i,
-        //     tweets_local[i].price = 19.90,
-        //     tweets_local[i].date = "213213123"
-        // }
-        // console.log('final return ' + tweets_local.length);
-        resolve(tweets_local);
+       resolve(tweets_local);
       } else {
         console.log('Inside ELSE,...');
-        resject([]);
+        reject([]);
       }
     });
   });
