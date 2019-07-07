@@ -1,7 +1,6 @@
 import React from 'react';
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
-
+import { FAVORITE_TWEET_MUTATION, RE_TWEET_MUTATION} from '../constents/gqlQueries';
 const TweetFooter = (tweet) => {
 
     return (
@@ -34,14 +33,5 @@ const TweetFooter = (tweet) => {
         </div>
         );
 };
-const FAVORITE_TWEET_MUTATION =  gql`
-mutation favoriteTweet($id: String!, $action: Boolean){
-    favoriteTweet(id: $id, action: $action)
-}
-`;
-const RE_TWEET_MUTATION =  gql`
-mutation reTweet($id: String!, $action: Boolean){
-    reTweet(id: $id, action: $action)
-}
-`;
+
 export default TweetFooter;

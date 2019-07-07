@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { POST_TWEET_MUTATION } from '../constents/gqlQueries'
 import { toggleShowPostAction } from '../redux/actions';
 
 const PostTweet = (props) => {
@@ -17,17 +17,7 @@ const PostTweet = (props) => {
     const performCancelClick = () => {
         toggleShowPostTweet();
     }
-    // /**
-    //  * This method is to delegate Post tweet action to parent component.
-    //  */
-    // const performPostClick = () => {
-    //     console.log('**JSR,..performPostClick,... ');
-    //     props.performPostTweet(tweetContent);
-    //     // After posting tweet - Close post Tweet view.
-    //     toggleShowPostTweet();
-    //     // Clear tweet content
-    //     document.getElementById('tweetEditor').innerHTML = '';
-    // }
+   
     return (
         <span className={showPostTweet ? '' : 'noDisplay'}>
             <Mutation mutation={POST_TWEET_MUTATION}>
@@ -60,18 +50,6 @@ const PostTweet = (props) => {
         </span>
     );
 };
-// const getAA = (tweetContent) => {
-const POST_TWEET_MUTATION =  gql`
-mutation createTweet($status: String!){
-    createTweet(status: $status)
-}
-`;
-// return POST_TWEET_MUTATION;
-// }
 
-// gql`
-// mutation {
-//     createTweet (status: $tweetContent) 
-//   }
-// `;
+
 export default PostTweet;

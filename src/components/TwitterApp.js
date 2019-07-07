@@ -3,13 +3,12 @@ import axios from 'axios';
 
 import TwitterAppHeader from './TwitterAppHeader'
 import TwitterAppBody from './TwitterAppBody'
-import AppConstents from '../constents/AppConstents';
 import { useDispatch, useSelector  } from 'react-redux';
 import { switchTweetTypeAction, toggleShowPostAction } from '../redux/actions';
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { Query } from "react-apollo";
-import { gql } from "apollo-boost";
+import { getGraphQLQuery } from "../constents/gqlQueries";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql"
@@ -97,53 +96,5 @@ const performSearchAction = (key) => {
   );
 };
 
-const getGraphQLQuery = (type, executeSearch) => {
-  let url = 'favorites/list';
- // If executeSearch is true ==> Means we need to perform Query for Search.
- // otherwise get Query for Tweet list of type provided.
-  url = AppConstents.getUrlpatternForTweetType(type);
-  console.log('**JSR,...getGraphQLQuery: ',type);
-  const timeLineTweetTypeQuery = gql`
-  query {
-    tweets (url: "${url}") {
-      text
-      id
-      id_str
-      retweet_count
-      favorite_count
-      retweeted
-      favorited
-      user {
-        name
-        screen_name
-        profile_image_url
-        location
-      }
-    }
-  }
-  `;
-  const searchTweetQuery = gql`
-  query {
-    searchTweets (url: "${executeSearch.searchKey}") {
-      text
-      id
-      id_str
-      retweet_count
-      favorite_count
-      retweeted
-      favorited
-      user {
-        name
-        screen_name
-        profile_image_url
-        location
-      }
-    }
-  }  
-  `;
-  if(executeSearch.isSearch) {
-    return searchTweetQuery;
-  }else
-    return timeLineTweetTypeQuery;
-}
+
 export default TwitterApp;
