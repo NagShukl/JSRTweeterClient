@@ -30,17 +30,18 @@ const PostTweet = () => {
                         <div className="actionbar">
                             <span className={tweetContent.length > 140 ? 'exceedLimit' : ''}>{140 - tweetContent.length}</span>
                             <Button color="secondary" onClick={() => performCancelClick()} outline>Cancel</Button>
-                            <Button color="primary" onClick={(e) => {
-                                e.preventDefault();
-                                postTweet(
-                                    {
-                                        variables: { status: tweetContent }
-                                    }
-                                );
-                                toggleShowPostTweet();
-                                // Clear tweet content
-                                document.getElementById('tweetEditor').innerHTML = '';
-                            }}
+                            <Button color="primary" disabled={(140 - tweetContent.length) <= 0}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    postTweet(
+                                        {
+                                            variables: { status: tweetContent }
+                                        }
+                                    );
+                                    toggleShowPostTweet();
+                                    // Clear tweet content
+                                    document.getElementById('tweetEditor').innerHTML = '';
+                                }}
                             >Post</Button>
                         </div>
                     </div>

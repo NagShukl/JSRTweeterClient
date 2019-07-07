@@ -8,7 +8,7 @@ const TwitterAppBody = (props) => {
     return (
         <div className="TwitterAppBody">
             <PostTweet></PostTweet>
-            <div>Total Number of tweets = {props.tweets.length}</div>
+            <div className="topInfo">Total Number of tweets = {props.tweets.length}</div>
             <ul className="tweetsContainer">
                 {
                     props.tweets.map(tweet => {
