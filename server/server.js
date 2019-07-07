@@ -4,13 +4,15 @@ const graphqlHttp = require('express-graphql');
 const { buildSchema } = require('graphql');
 const Twitter = require('twitter');
 const config = require('./config.js');
+const cors = require('cors');
 const client = new Twitter(config);
 
 var port = process.env.PORT || 4000;
 const app = express();
 
 const tweets = [];
-
+// allow cross origin
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use(
