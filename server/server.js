@@ -99,6 +99,8 @@ app.use(
         }
         type RootMutation {
             createTweet(status: String): String
+            favoriteTweet(id: String, action: Boolean): String
+            reTweet(id: String, action: Boolean): String
         }
         schema {
             query: RootQuery
@@ -120,11 +122,52 @@ app.use(
           console.log('**JSR,...createTweet:,...'+args);
           const res = jsrCreateTweet(args.status);
         return res;
+      },
+      favoriteTweet: args => {
+        console.log('**JSR,...favoriteTweet:,...',args);
+        const res = jsrFavoriteTweet(args.id, args.action);
+        return res;
+      },
+      reTweet: args => {
+        console.log('**JSR,...jsrReTweet:,...',args);
+        const res = jsrReTweet(args.id, args.action);
+        return res;
       }
     },
     graphiql: true
   })
 );
+const jsrReTweet = (id, action) => {
+  console.log('**JSR jsrReTweet is called with : ' + id+ ' : '+action+' : '+(!action?'retweet':'unretweet'));
+  return new Promise((resolve, reject) => {
+    let url = 'statuses/'+(!action?'retweet':'unretweet')+'/'+id;
+    console.log('/retweet,....'+url);
+    client.post(url, (err, response) => {
+            if(err){
+              console.log(err);
+              reject('Error: Re Tweet '+err);
+              return;
+            }
+          resolve(`Tweet ReTweeted/UnRetweeted successfully!! user=${response.user.screen_name}, id=${response.id_str}`);
+          });
+  
+  });
+}
+const jsrFavoriteTweet = (id, action) => {
+  console.log('**JSR jsrFavoriteTweet is called with : ' + id+ ' : '+action+' : '+(!action?'create':'destroy'));
+  return new Promise((resolve, reject) => {
+
+  let url = 'favorites/'+(!action?'create':'destroy');
+  client.post(url, { 'id': id }, (err, response) => {
+          if(err){
+            console.log(err[0].message);
+            reject('Error: favorite Tweet '+err);
+            return;
+          }
+          resolve(`Tweet favorited/unfavorited successfully!! user=${response.user.screen_name}, id=${response.id_str}`);
+        });
+  });
+}
 const jsrCreateTweet = (status) => {
   console.log('**JSR jsrCreateTweet is called with : ' + status);
   return new Promise((resolve, reject) => {

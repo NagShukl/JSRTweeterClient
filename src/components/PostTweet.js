@@ -17,17 +17,17 @@ const PostTweet = (props) => {
     const performCancelClick = () => {
         toggleShowPostTweet();
     }
-    /**
-     * This method is to delegate Post tweet action to parent component.
-     */
-    const performPostClick = () => {
-        console.log('**JSR,..performPostClick,... ');
-        props.performPostTweet(tweetContent);
-        // After posting tweet - Close post Tweet view.
-        toggleShowPostTweet();
-        // Clear tweet content
-        document.getElementById('tweetEditor').innerHTML = '';
-    }
+    // /**
+    //  * This method is to delegate Post tweet action to parent component.
+    //  */
+    // const performPostClick = () => {
+    //     console.log('**JSR,..performPostClick,... ');
+    //     props.performPostTweet(tweetContent);
+    //     // After posting tweet - Close post Tweet view.
+    //     toggleShowPostTweet();
+    //     // Clear tweet content
+    //     document.getElementById('tweetEditor').innerHTML = '';
+    // }
     return (
         <span className={showPostTweet ? '' : 'noDisplay'}>
             <Mutation mutation={POST_TWEET_MUTATION}>
