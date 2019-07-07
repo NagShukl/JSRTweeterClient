@@ -81,7 +81,6 @@ const handleTweetAction = (action) => {
   reqBody.id = action.id;
   reqBody.action = action.subAction;
   let url = (action.action === AppConstents.FAVOTIE) ?'/favoritetweet':'/retweet';
-  alert(url);
   console.log('**JSR,...',reqBody);
   console.log('**JSR,...',action);
   axios.post('http://localhost:4000'+url, reqBody).then(response => response.data)
