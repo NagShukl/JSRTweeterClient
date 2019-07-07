@@ -7,7 +7,7 @@ const config = require('./config.js');
 const cors = require('cors');
 const client = new Twitter(config);
 
-var port = process.env.PORT || 4000;
+var port = process.env.PORT || 5000;
 const app = express();
 
 const tweets = [];

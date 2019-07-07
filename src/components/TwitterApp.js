@@ -6,6 +6,14 @@ import TwitterAppBody from './TwitterAppBody'
 import AppConstents from '../constents/AppConstents';
 import { useDispatch, useSelector  } from 'react-redux';
 import { switchTweetTypeAction, loadTweetsAction, toggleShowPostAction } from '../redux/actions';
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+import { Query } from "react-apollo";
+import { gql } from "apollo-boost";
+
+const client = new ApolloClient({
+  uri: "http://localhost:5000/graphql"
+});
 
 const TwitterApp = () => {
 // to get state form store
@@ -101,25 +109,52 @@ const handleTweetAction = (action) => {
         // **JSR_NS_TO_DO use mock data to render tweets here.
       })
 }
-// const updateTweetById = (id, isFavorited) => {
-//   let ele;
-//   let ii;
-//   tweets.forEach((element, index) => {
-//     if(element.id_str === id) {
-//       alert(element.favorited + ' : '+isFavorited);
-//       element.favorited = isFavorited;
-//       ele = element;
-//       ii = index;
-//       alert(element.favorited + ' : '+isFavorited+ 'index = '+index);
-//     }
-//   });
-//   tweets[ii] = ele;
-  
-//   loadTweets(tweets);
-//   doRefreshLocal(true);
-// }
+
   return (
-        <div className="TwitterApp">
+    <ApolloProvider client={client}>
+      <Query
+    query={gql`
+    query {
+      tweets (url: "statuses/mentions_timeline") {
+        title
+        text
+        id
+        id_str
+        description
+        retweet_count
+        favorite_count
+        retweeted
+        favorited
+        user {
+          name
+          screen_name
+          profile_image_url
+          location
+        }
+      }
+    }
+    `}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <p>Loading...</p>;
+      if (error) return <p>Error :(</p>;
+      //  return data.tweets.map((ele) => {
+      //    console.log(ele);
+      //    return <div>Jai Shri Ram!</div>
+      //  });
+      return (<div className="TwitterApp">
+      <TwitterAppHeader selectedTweetType={selectedTweetType}
+    onTweetTypeSelect={performTweetTypeSelect} postClickAction={performPostClickAction}
+    onSearch={performSearchAction}></TwitterAppHeader>
+    <TwitterAppBody tweets={data.tweets} showPostTweet={showPostTweet}
+    postTweetAction={handlePostTweetAction}
+    onTweetAction={handleTweetAction}></TwitterAppBody>
+  
+  
+</div>);
+     
+    }}
+        {/* <div className="TwitterApp">
           <TwitterAppHeader selectedTweetType={selectedTweetType}
         onTweetTypeSelect={performTweetTypeSelect} postClickAction={performPostClickAction}
         onSearch={performSearchAction}></TwitterAppHeader>
@@ -128,7 +163,9 @@ const handleTweetAction = (action) => {
         onTweetAction={handleTweetAction}></TwitterAppBody>
       
       
-    </div>
+    </div> */}
+    </Query>
+    </ApolloProvider>
   );
 };
 
