@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import RenderTweet from './RenderTweet';
 import PostTweet from './PostTweet';
 
@@ -6,9 +6,7 @@ const TwitterAppBody = (props) => {
     const handlePostTweetAction = (tweetContent) => {
         props.postTweetAction(tweetContent);
     }
-    const onTweetAction = (action) => {
-        props.onTweetAction(action);
-    }
+    
     return (
         <div className="TwitterAppBody">
             <PostTweet performPostTweet={handlePostTweetAction}></PostTweet>
@@ -19,7 +17,7 @@ const TwitterAppBody = (props) => {
         {
            
             props.tweets.map(tweet => {
-                  return RenderTweet(tweet,onTweetAction);
+                  return RenderTweet(tweet);
                 })
              
         }

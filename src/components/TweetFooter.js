@@ -1,17 +1,9 @@
 import React from 'react';
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import AppConstants from '../constents/AppConstents';
 
-const TweetFooter = (tweet, onTweetAction) => {
-    const performTweetAction = (action, subAction) => {
-        const res = {};
-        res.id = tweet.id_str;
-        res.action = action;
-        res.subAction = subAction;
-        console.log('**JSR,..TweetFooter : performTweetAction : ',res);
-        onTweetAction(res);
-    }
+const TweetFooter = (tweet) => {
+
     return (
         <div className="TweetFooter">
             <div>
@@ -21,7 +13,6 @@ const TweetFooter = (tweet, onTweetAction) => {
             <i className={tweet.retweeted?'fa fa-retweet actionDone':'fa fa-retweet'}
             onClick={(e) => {
                 e.preventDefault();
-                //performTweetAction(AppConstants.FAVOTIE, tweet.favorited)
                 re({
                     variables: {id: tweet.id_str, action: tweet.retweeted}
                 });
@@ -33,7 +24,6 @@ const TweetFooter = (tweet, onTweetAction) => {
             <i className={tweet.favorited?'fa fa-heart actionDone':'fa fa-heart'}
             onClick={(e) => {
                 e.preventDefault();
-                //performTweetAction(AppConstants.FAVOTIE, tweet.favorited)
                 favorite({
                     variables: {id: tweet.id_str, action: tweet.favorited}
                 });

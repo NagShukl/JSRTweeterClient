@@ -2,10 +2,8 @@ import React from 'react';
 import TweetHeader from './TweetHeader';
 import TweetFooter from './TweetFooter';
 
-const RenderTweet = (tweet, parTweetAction) => {
-    const onTweetAction = (action) => {
-        parTweetAction(action);
-    }
+const RenderTweet = (tweet) => {
+    
     return (<li key={tweet.id}><div  className='RenderTweet'>
         {/* <TweetHeader user={tweet.user}></TweetHeader>  */}
         {TweetHeader(tweet.user)}
@@ -13,7 +11,7 @@ const RenderTweet = (tweet, parTweetAction) => {
         
         {TweetText(tweet)}
    
-        {TweetFooter(tweet, onTweetAction)}
+        {TweetFooter(tweet)}
         </div> </li>);
 }
 const TweetText = (tweet) => {
