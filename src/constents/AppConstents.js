@@ -28,5 +28,8 @@ export default {
     getFetchTweetUrlFor(type) {
       // alert(AppConstents.tweet_types[0].type_key+'**JSR,..type='+type+' : '+);
       return this.API_BASE + '?urlpattern=' + this.tweet_types.filter(ele => (ele.type_key === type))[0].type_url;
+    },
+    getUrlpatternForTweetType(type) {
+      return this.tweet_types.filter(ele => (ele.type_key === type))[0].type_url;
     }
   };

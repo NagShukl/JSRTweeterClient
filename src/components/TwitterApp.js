@@ -10,6 +10,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
+import JsApiReporter from 'jest-jasmine2/build/jasmine/JsApiReporter';
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql"
@@ -19,7 +20,7 @@ const TwitterApp = () => {
 // to get state form store
   const tweets = useSelector( state => state.tweets);
   const selectedTweetType = useSelector( state => state.selectedTweetType);
-  const [refreshLocal, doRefreshLocal] = useState(false);
+  const [executeSearch, doExecuteSearch] = useState({isSearch:false, searchKey:''});
   const showPostTweet = useSelector( state => state.showPostTweet);
   // let showPostTweet = false;
 
@@ -32,26 +33,24 @@ const TwitterApp = () => {
   useEffect(() => {
     // make an API call to load twittes
     console.log('**JAI Shri Ram!! useEffect making call to get data');
-    // if(!refreshLocal) {
-      getTweetsForSelectedType();
-    // }
-    // refreshLocal = !refreshLocal;    
-  }, [selectedTweetType, refreshLocal]);
-  
-  const getTweetsForSelectedType = () => {
-    axios.get(AppConstents.getFetchTweetUrlFor(selectedTweetType)).then(response => response.data)
-      .then((data) => {
-        loadTweets(data);
-        // <NS_TODO>Should clear search box,...
-        console.log('Got the response as,...', data);
-      }).catch(err => {
-        alert('Got error!!'+err);
-        // **JSR_NS_TO_DO use mock data to render tweets here.
-      })
-  };
+      //getTweetsForSelectedType();  
+  }, [selectedTweetType, executeSearch]);
+  // const getTweetsForSelectedType = () => {
+  //   axios.get(AppConstents.getFetchTweetUrlFor(selectedTweetType)).then(response => response.data)
+  //     .then((data) => {
+  //       loadTweets(data);
+  //       // <NS_TODO>Should clear search box,...
+  //       console.log('Got the response as,...', data);
+  //     }).catch(err => {
+  //       alert('Got error!!'+err);
+  //       // **JSR_NS_TO_DO use mock data to render tweets here.
+  //     })
+  // };
 
   const performTweetTypeSelect = (selectedType) => {
+    doExecuteSearch({isSearch:false, searchKey:''});
     setSelectedTweetType(selectedType);
+    
   }
 const performPostClickAction = (evt) => {
   toggleShowPostTweet();//!showPostTweet);
@@ -78,15 +77,17 @@ const performPostClickAction = (evt) => {
  * @param {Search Query text} key 
  */
 const performSearchAction = (key) => {
-  // alert('performSearchAction,...from twitter App,...Make an API call to search for :: '+key);
-  axios.post('http://localhost:4000/searchtweets', {q:key}).then(response => response.data)
-      .then((data) => {
-        loadTweets(data);
-        console.log('Got the response as,...', data);
-      }).catch(err => {
-        alert('Got error!!');
-        // **JSR_NS_TO_DO use mock data to render tweets here.
-      });
+  alert('**JSR,...performSearchAction'+key);
+  doExecuteSearch({isSearch:true, searchKey:key});
+  // // alert('performSearchAction,...from twitter App,...Make an API call to search for :: '+key);
+  // axios.post('http://localhost:4000/searchtweets', {q:key}).then(response => response.data)
+  //     .then((data) => {
+  //       loadTweets(data);
+  //       console.log('Got the response as,...', data);
+  //     }).catch(err => {
+  //       alert('Got error!!');
+  //       // **JSR_NS_TO_DO use mock data to render tweets here.
+  //     });
 }
 const handleTweetAction = (action) => {
   console.log('onTweetAction : from TWITTER APP,...make API call,...',action);
@@ -102,7 +103,7 @@ const handleTweetAction = (action) => {
       .then((data) => {
         // loadTweets(data);
         //updateTweetById(action.id, !action.subAction);
-        doRefreshLocal(!refreshLocal);
+       
         console.log('Got the response as,...', data);
       }).catch(err => {
         alert('Got error!! '+err);
@@ -112,28 +113,9 @@ const handleTweetAction = (action) => {
 
   return (
     <ApolloProvider client={client}>
+      {console.log('**JSR,....Query is being called '+selectedTweetType+' : doExecuteSearch(true)=='+executeSearch)}
       <Query
-    query={gql`
-    query {
-      tweets (url: "statuses/mentions_timeline") {
-        title
-        text
-        id
-        id_str
-        description
-        retweet_count
-        favorite_count
-        retweeted
-        favorited
-        user {
-          name
-          screen_name
-          profile_image_url
-          location
-        }
-      }
-    }
-    `}
+    query={getGraphQLQuery(selectedTweetType, executeSearch)}
   >
     {({ loading, error, data }) => {
       if (loading) return <p>Loading...</p>;
@@ -142,11 +124,12 @@ const handleTweetAction = (action) => {
       //    console.log(ele);
       //    return <div>Jai Shri Ram!</div>
       //  });
+      let tweets = executeSearch.isSearch? data.searchTweets:data.tweets;
       return (<div className="TwitterApp">
       <TwitterAppHeader selectedTweetType={selectedTweetType}
     onTweetTypeSelect={performTweetTypeSelect} postClickAction={performPostClickAction}
     onSearch={performSearchAction}></TwitterAppHeader>
-    <TwitterAppBody tweets={data.tweets} showPostTweet={showPostTweet}
+    <TwitterAppBody tweets={tweets} showPostTweet={showPostTweet}
     postTweetAction={handlePostTweetAction}
     onTweetAction={handleTweetAction}></TwitterAppBody>
   
@@ -169,5 +152,55 @@ const handleTweetAction = (action) => {
   );
 };
 
-
+const getGraphQLQuery = (type, executeSearch) => {
+  let url = 'favorites/list';
+ // If executeSearch is true ==> Means we need to perform Query for Search.
+ // otherwise get Query for Tweet list of type provided.
+  url = AppConstents.getUrlpatternForTweetType(type);
+  alert('**JSR,...using url for gql='+url+' : executeSearch='+executeSearch.isSearch+' : '+executeSearch.searchKey);
+  console.log('**JSR,...getGraphQLQuery: ',type);
+  const timeLineTweetTypeQuery = gql`
+  query {
+    tweets (url: "${url}") {
+      text
+      id
+      id_str
+      retweet_count
+      favorite_count
+      retweeted
+      favorited
+      user {
+        name
+        screen_name
+        profile_image_url
+        location
+      }
+    }
+  }
+  `;
+  const searchTweetQuery = gql`
+  query {
+    searchTweets (url: "${executeSearch.searchKey}") {
+      text
+      id
+      id_str
+      retweet_count
+      favorite_count
+      retweeted
+      favorited
+      user {
+        name
+        screen_name
+        profile_image_url
+        location
+      }
+    }
+  }  
+  `;
+  if(executeSearch.isSearch) {
+    alert('**JSR,...returning GQL Query, As executeSearch is true - no query yet.');
+    return searchTweetQuery;
+  }else
+    return timeLineTweetTypeQuery;
+}
 export default TwitterApp;

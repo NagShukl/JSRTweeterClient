@@ -86,11 +86,6 @@ app.use(
           retweeted: Boolean
           possibly_sensitive: Boolean
           lang: String
-          title: String
-          _id: String
-          description: String!
-          price: Float!
-          date: String!
         }
         input TweetInput {
           title: String!
@@ -100,6 +95,7 @@ app.use(
         }
         type RootQuery {
             tweets(url: String): [Tweet!]!
+            searchTweets(url: String): [Tweet!]!
         }
         type RootMutation {
             createTweet(tweetInput: TweetInput): Tweet
@@ -110,10 +106,15 @@ app.use(
         }
     `),
     rootValue: {
-        tweets:  (url) => {
-              const res = jsrTweet(url.url);   
-              console.log('**JSR,..returning from main resolver '+res);  
-              return res;
+      tweets: (url) => {
+        const res = jsrTweet(url.url);
+        console.log('**JSR,..returning from main resolver ' + res);
+        return res;
+      },
+      searchTweets: (url) => {
+        const res = jsrTweetSearch(url.url);
+        console.log('**JSR,..returning from Search resolver ' , res);
+        return res;
       },
       createTweet: args => {
         //   console.log('**JSR,...'+args.)
@@ -131,40 +132,69 @@ app.use(
     graphiql: true
   })
 );
-const jsrTweet = (url) => {
-    console.log('**JSR jsrTweet is called with : '+url);
-    return new Promise((resolve, reject) => {
-        client.get(url, function (error, tweets_local, response) {
-            if (!error) {
-                console.log('**JSR,..Rqturing resolve,..from callback '+tweets_local.length);
-                const res = [];
-                for(let i = 0; i < tweets_local.length; i++) {
-                    // res.push(
-                    //    const abc =  {
-                        tweets_local[i]._id= "1111",
-                        tweets_local[i].title= "**JSR title _ "+i,
-                        tweets_local[i].description= "**JSR desc,..._"+i,
-                        tweets_local[i].price=  19.90,
-                        tweets_local[i].date= "213213123"
-                    // }
-                    // );
-                   // tweets_local[i] = {...tweets_local[i],abc};
-
-                    console.log('==> '+tweets_local[i].title+' : '+tweets_local[i]._id);
-                }
-                //const final = [...tweets, res];
-                console.log('final return '+tweets_local.length);
-                resolve(tweets_local);
-            }else {
-                console.log('Inside ELSE,...');
-                resject([]);
-            }
-            
-        });
+// jsrTweetSearch
+const jsrTweetSearch = (url) => {
+  console.log('**JSR jsrTweet is called with : ' + url);
+  const q = url;
+  // res.json({ 'q': q });
+  const params = {
+    q: q,
+    count: 10,
+    result_type: 'recent',
+    lang: 'en'
+  }
+  return new Promise((resolve, reject) => {
+    client.get('search/tweets', params, (err, data, response) => {
+      // If there is no error, proceed
+      if (err) {
+        console.log('aa: ', err);
+        resject([]);
+      }
+      console.log('**JSR,...Here is my search result,...'+data.statuses.length);
+      resolve(data.statuses);
     });
+    // client.get(url, function (error, tweets_local, response) {
+    //   if (!error) {
+    //     for (let i = 0; i < tweets_local.length; i++) {
+    //       tweets_local[i]._id = "1111",
+    //         tweets_local[i].title = "**JSR title _ " + i,
+    //         tweets_local[i].description = "**JSR desc,..._" + i,
+    //         tweets_local[i].price = 19.90,
+    //         tweets_local[i].date = "213213123"
+    //     }
+    //     console.log('final return ' + tweets_local.length);
+    //     resolve(tweets_local);
+    //   } else {
+    //     console.log('Inside ELSE,...');
+    //     resject([]);
+    //   }
+    // });
+  });
+}
+
+const jsrTweet = (url) => {
+  console.log('**JSR jsrTweet is called with : ' + url);
+  return new Promise((resolve, reject) => {
+    client.get(url, function (error, tweets_local, response) {
+      if (!error) {
+        // for (let i = 0; i < tweets_local.length; i++) {
+        //   tweets_local[i]._id = "1111",
+        //     tweets_local[i].title = "**JSR title _ " + i,
+        //     tweets_local[i].description = "**JSR desc,..._" + i,
+        //     tweets_local[i].price = 19.90,
+        //     tweets_local[i].date = "213213123"
+        // }
+        // console.log('final return ' + tweets_local.length);
+        resolve(tweets_local);
+      } else {
+        console.log('Inside ELSE,...');
+        resject([]);
+      }
+    });
+  });
 }
 
 
 app.listen(port, function () {
-    console.log('Server started on port: ' + port);
-  });
+  console.log('Server started on port: ' + port);
+});
