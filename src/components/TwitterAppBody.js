@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import RenderTweet from './RenderTweet';
 import PostTweet from './PostTweet';
 
@@ -14,7 +14,7 @@ const TwitterAppBody = (props) => {
             <PostTweet performPostTweet={handlePostTweetAction}></PostTweet>
             
             
-        <p>Total Number of tweets = {props.tweets.length} :: {''+props.showPostTweet}</p>
+            <div className="topInfo">Total Number of tweets = {props.tweets.length}</div>
         <ul className="tweetsContainer">
         {
            

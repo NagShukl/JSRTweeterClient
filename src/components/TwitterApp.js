@@ -13,7 +13,6 @@ const TwitterApp = () => {
   const selectedTweetType = useSelector( state => state.selectedTweetType);
   const [refreshLocal, doRefreshLocal] = useState(false);
   const showPostTweet = useSelector( state => state.showPostTweet);
-  // let showPostTweet = false;
 
   // use to dispatch action
   const dispatch = useDispatch();
@@ -23,11 +22,7 @@ const TwitterApp = () => {
 
   useEffect(() => {
     // make an API call to load twittes
-    console.log('**JAI Shri Ram!! useEffect making call to get data');
-    // if(!refreshLocal) {
       getTweetsForSelectedType();
-    // }
-    // refreshLocal = !refreshLocal;    
   }, [selectedTweetType, refreshLocal]);
   
   const getTweetsForSelectedType = () => {
@@ -35,7 +30,6 @@ const TwitterApp = () => {
       .then((data) => {
         loadTweets(data);
         // <NS_TODO>Should clear search box,...
-        console.log('Got the response as,...', data);
       }).catch(err => {
         alert('Got error!!'+err);
         // **JSR_NS_TO_DO use mock data to render tweets here.
@@ -46,7 +40,7 @@ const TwitterApp = () => {
     setSelectedTweetType(selectedType);
   }
 const performPostClickAction = (evt) => {
-  toggleShowPostTweet();//!showPostTweet);
+  toggleShowPostTweet();
 }
 /**
    * This method is to post the tweetContent to the API.

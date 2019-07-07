@@ -6,6 +6,7 @@ $tweetSectionBoder: 1px solid #e6ecf0;
 $tweetSideMargin: 20px;
 $tweetHoverColor:   rgb(232, 236, 240);
 $actionDoneColor: rgb(228, 78, 78);
+$genBorderRadius: 20px;
 body {
     background-color: rgba(255, 255, 255, 0.959);
     .TwitterApp {
@@ -13,15 +14,23 @@ body {
             height: 60px;
             justify-content: right;
             background-color: #ABCDEF;
+            position: fixed;
+            top: 0px;
+            width: 100%;
             .rightPanel {
                 float: right;
                 justify-content: right;
                 margin-top: 10px;
                 margin-right: $tweetSideMargin;
+                @media (max-width: 560px) {
+                    margin-top: 0px;
+                }
                 form {
                     display: inline;
                     input[type='search'] {
                         display: inline;
+                        border-radius: 20px;
+                        border-radius: $genBorderRadius;
                         width: 200px;
                     }
                 }
@@ -29,19 +38,53 @@ body {
                 Button {
                     margin-left: 10px;
                     margin-right: 10px;
-                    display: inline;                    
+                    display: inline;   
+                    border-radius: $genBorderRadius;   
+                    @media (max-width: 560px) {
+                        display: none;
+                    }
+                             
                 }
+                .fa-edit {
+                    font-size: 2.0rem;
+                    color: white;  
+                    font-weight: bold;
+                    display: none;
+                    margin-left: 5px;
+                    margin-right: -10px;
+                    margin-top: -10px;
+                    @media (max-width: 560px) {
+                        display: inline;
+                        &:hover{
+                            font-weight: bolder;
+                            color: blue;
+                            cursor: pointer;
+                        }
+                    }
+                    
+                } 
             }
             
             select {
                 float: left;
-                margin-top: 20px;
+                margin-top: 15px;
                 margin-left: 20px;
+                border-radius: $genBorderRadius;
+                height: 35px;
+                @media (max-width: 560px) {
+                    margin-left: 2px;
+                    width: 115px;
+                }
             }
         }
     .TwitterAppBody {
-        // .tweetsContainer {
-            // background-color: red;
+        margin-top: 61px;
+        span {
+            display: block;
+            width: 100%;
+            clear: both;
+        }
+
             ul {
                 list-style-type: none;
                 margin: 0px;
@@ -49,16 +92,20 @@ body {
                 // display:;
                 li {
                     margin: $tweetSideMargin;
-                    // margin-right: $tweetSideMargin;
+                    border-radius: 35px;
                     background-color: $tweetBodyColor;
                     padding: 10px;
                    
                     .RenderTweet {
                         margin: 10px;
-                        // background-color: $tweetBodyColor;
-                        // border-top: $tweetSectionBoder;
+                        .tweetText {
+                            margin-left: 60px;
+                        }
                         .TweetHeader{
                             border-bottom: $tweetSectionBoder;
+                            img {
+                                margin-right: 10px;
+                            }
                         }
                         .TweetFooter {
                             border-top: $tweetSectionBoder;
@@ -107,6 +154,10 @@ body {
                     // opacity: .1;
                 }
             }
+            .topInfo {
+                margin-left: $tweetSideMargin;
+                clear: both;
+            }
            
         // }
         .PostTweet {
@@ -114,6 +165,7 @@ body {
             padding-left: 50px;
             padding-right: 50px;
             background-color: $tweetColor;
+            margin-left: 0px;
             .tweetEditor {
                 height: 150px;
                 background-color: $tweetEditorColor;
@@ -129,6 +181,7 @@ body {
                 justify-content: center;
                 Button {
                     margin-left: 10px;
+                    border-radius: $genBorderRadius;
                 }
                 span {
                     // margin-right: 10px;

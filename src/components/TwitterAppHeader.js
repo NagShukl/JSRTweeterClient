@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from 'reactstrap';
 import TwitterSelect from './TwitterSelect'
 
@@ -20,13 +20,14 @@ const TwitterAppHeader = (props) => {
     }
     return (
         <div className="TwitterAppHeader">
-           
+
             <div className="rightPanel">
-            <form onSubmit={performSearch}>
-                <input name="searchInput" type="search" className='form-control' q="googlesearch"
-                placeholder='Search key...'></input>
-            </form>
+                <form onSubmit={performSearch}>
+                    <input name="searchInput" type="search" className='form-control' q="googlesearch"
+                        placeholder='Search key...'></input>
+                </form>
                 <Button color="primary" onClick={() => props.postClickAction()}>Post Tweet</Button>
+                <i className="fal fa-edit" onClick={() => props.postClickAction()}></i>
             </div>
             <TwitterSelect
                 selectedTweetType={props.selectedTweetType}

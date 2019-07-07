@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'reactstrap';
 import { useDispatch, useSelector  } from 'react-redux';
-import { switchTweetTypeAction, loadTweetsAction, toggleShowPostAction } from '../redux/actions';
+import { toggleShowPostAction } from '../redux/actions';
 
 const PostTweet = (props) => {
     const [tweetContent, setTweetContent] = useState('');
